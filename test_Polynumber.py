@@ -247,10 +247,10 @@ class TestPolynumberDivision:
         assert result.coeffs == {}
 
     def test_dividing_by_zero_polynomial_return_not_implemented(self):
-         """Test that dividing by zero returns NotImplemented"""
-         poly1 = Polynumber({(0,): 3, (1,): 2})
-         poly2 = Polynumber({})
-         with pytest.raises(TypeError):
+        """Test that dividing by zero returns NotImplemented"""
+        poly1 = Polynumber({(0,): 3, (1,): 2})
+        poly2 = Polynumber({})
+        with pytest.raises(TypeError):
             poly1 / poly2
 
     def test_dividing_zero_polynomial_by_nonzero_polynomial(self):

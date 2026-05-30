@@ -135,9 +135,9 @@ class Polynumber:
         if isinstance(other, Polynumber) and not any(len(k) > 1 for k in all_coeff_keys):
             # doing long division slightly backward.
             # example in base10 with commas between digit places:
-            # i.e,                  243 = 3159/13 
-            #          2, 4,3                quotent = {dimen: mult, dimen: mult, dimen, mult} = 2,4,3
-            # 1,3 / 2,10,15,9       divisor/dividend    
+            # i.e, 243 = 3159/13
+            #          2, 4,3       quotent = {dimen: mult, dimen: mult, dimen, mult} = 2,4,3
+            # 1,3 / 2,10,15,9       divisor/dividend
             #             3,9       mult * divisor * slider**shift == 3 * 13 * 10**0
             #       2,10,12,        remainder
             #          4,12         mult * divisor * slider**shift == 4 * 13 * 10**1
