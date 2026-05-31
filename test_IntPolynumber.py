@@ -32,44 +32,29 @@ class TestIntPolynumberInstantiation:
         assert (0,) not in poly.coeffs
         assert poly.coeffs == {(1,): 2, (2,): 3}
 
-    def test_intpolynumber_filters_invalid_keys(self):
+    def test_intpolynumber_errors_invalid_keys(self):
         """Test that invalid keys are filtered out"""
         coeffs = {(0,): 3, (1,): 2, "invalid": 5}
-        poly = IntPolynumber(coeffs)
-        assert "invalid" not in poly.coeffs
-        assert len(poly.coeffs) == 2
+        with pytest.raises(TypeError):
+            poly = IntPolynumber(coeffs)
 
-    def test_intpolynumber_filters_invalid_values(self):
+    def test_intpolynumber_errors_invalid_values(self):
         """Test that invalid values are filtered out"""
         coeffs = {(0,): "invalid", (1,): 2, (2,): 3}
+        with pytest.raises(TypeError):
+           poly = IntPolynumber(coeffs)
+
+    def test_correctly_reorders_coefficients(self):
+        """Test creating a intpolynumber with float coefficients"""
+        coeffs = {(9, 1): 4, (4,): 8, (4, 1): 1, (9,): 15}
         poly = IntPolynumber(coeffs)
-        assert (0,) not in poly.coeffs
-        assert poly.coeffs == {(1,): 2, (2,): 3}
-
-    """I don't think I want float coefficients right now.  Will make these rational coeffs later"""
-    # def test_intpolynumber_with_float_coefficients(self):
-    #     """Test creating a intpolynumber with float coefficients"""
-    #     coeffs = {(0,): 3.7, (1,): 2.5}
-    #     poly = IntPolynumber(coeffs)
-    #     assert poly.coeffs == {(0,): 3.7, (1,): 2.5}
-
-    # def test_correctly_reorders_coefficients(self):
-    #     """Test creating a intpolynumber with float coefficients"""
-    #     coeffs = {(9, 1): 4, (4,): 8, (4, 1): 1, (9,): 15}
-    #     poly = IntPolynumber(coeffs)
-    #     assert poly.coeffs == {(4,): 8, (4, 1): 1, (9,): 15, (9, 1): 4}
+        assert poly.coeffs == {(4,): 8, (4, 1): 1, (9,): 15, (9, 1): 4}
 
     def test_intpolynumber_repr(self):
         """Test the string representation of a intpolynumber"""
         coeffs = {(1,): 2, (0,): 3}
         poly = IntPolynumber(coeffs)
-        assert str(poly) == str(IntPolynumber({(0,): 3, (1,): 2}))
-
-    def test_intpolynumber_repr_inverse(self):
-        """Test the string representation of a intpolynumber"""
-        coeffs = {(1,): 2, (0,): 3}
-        poly = IntPolynumber(coeffs)
-        assert str(poly) != f"IntPolynumber({dict(coeffs)})"
+        assert str(poly) == "IntPolynumber({(0,): 3, (1,): 2})"
 
     def test_accepts_ordered_dict(self):
         """Test if OrderdedDict arguments are accepted"""
@@ -297,4 +282,3 @@ class TestIntPolynumberDivision:
         poly3 = poly1 * poly2
         print("poly3:", poly3)
         assert poly3 / poly1 == poly2
-        # assert poly3 / poly2 == poly1
