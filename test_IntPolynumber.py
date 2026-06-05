@@ -1,7 +1,7 @@
 import pytest
 from random import randint
 from collections import OrderedDict
-from Polynumber import IntPolynumber
+from IntPolynumber import IntPolynumber
 
 
 class TestIntPolynumberInstantiation:
@@ -42,7 +42,7 @@ class TestIntPolynumberInstantiation:
         """Test that invalid values are filtered out"""
         coeffs = {(0,): "invalid", (1,): 2, (2,): 3}
         with pytest.raises(TypeError):
-           poly = IntPolynumber(coeffs)
+            poly = IntPolynumber(coeffs)
 
     def test_correctly_reorders_coefficients(self):
         """Test creating a intpolynumber with float coefficients"""
@@ -197,6 +197,14 @@ class TestIntPolynumberMultiplication:
         # (x + 1)(x + 2) = x^2 + 3x + 2
         assert result.coeffs == {(0,): 2, (1,): 3, (2,): 1}
 
+    def test_multiply_intpolynumber_binomials_with_negatives(self):
+        """Test multiplying (x - 1) * (2x + 3)"""
+        poly1 = IntPolynumber({(0,): -1, (1,): 1})  # x - 1
+        poly2 = IntPolynumber({(0,): 3, (1,): 2})  # 2x + 3
+        result = poly1 * poly2
+        # (x - 1)(2x + 3) = 2x^2 + 1x - 3
+        assert result.coeffs == {(0,): -3, (1,): 1, (2,): 2}
+
     def test_multiply_intpolynumber_by_negative_scalar(self):
         """Test multiplying by negative scalar"""
         poly = IntPolynumber({(0,): 3, (1,): 2})
@@ -264,10 +272,25 @@ class TestIntPolynumberDivision:
         assert result.coeffs == {}
 
     def test_divide_negative_intpolynumber(self):
+        """Test dividing (-6x - 9)/(2x + 3) == (-3)"""
         poly1 = IntPolynumber({(0,): -9, (1,): -6})
         poly2 = IntPolynumber({(0,): 3, (1,): 2})
         result = poly1 / poly2
         assert result.coeffs == {(0,): -3}
+
+    def test_divide_intpolynumber_binomials_with_negatives(self):
+        """Test multiplying (2x^2 + 1x - 3)/(x - 1) == (2x + 3)"""
+        poly1 = IntPolynumber({(0,): -3, (1,): 1, (2,): 2})
+        poly2 = IntPolynumber({(0,): -1, (1,): 1})
+        result = poly1 / poly2
+        assert result.coeffs == {(0,): 3, (1,): 2}
+
+    def test_divide_intpolynumber_binomials_with_negatives2(self):
+        """Test multiplying (2x^2 + 1x - 3)/(2x + 3) == (x - 1)"""
+        poly1 = IntPolynumber({(0,): -3, (1,): 1, (2,): 2})
+        poly2 = IntPolynumber({(0,): 3, (1,): 2})
+        result = poly1 / poly2
+        assert result.coeffs == {(0,): -1, (1,): 1}
 
     def test_dividing_large_positive_intpolynumbers(self):
         """Test creating 2 large intpolynumbers a,b; doing a*b=c, then checking if c/b == a & c/a == b"""
